@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="<%-lang%>" dir="<%-dir%>">
+
+<head>
+	<%-head.title%>
+    <%-head.meta%>
+    <%-head.style%>
+    <%-head.link%>
+    <%-head.noscript%>
+</head>
+
+<body>
+	<div id="react-main-mount"><div><%-reactOutput%></div></div>
+	<script>
+	window.__INITIAL_STATE__ = <%-state%>;
+	</script>
+	<script src="/__build__/vendor.js"></script>
+    <script src="/__build__/main.js"></script>
+</body>
+
+</html>
