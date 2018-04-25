@@ -1,12 +1,11 @@
-import Koa from 'koa';
-import helmet from 'koa-helmet';
-import views from 'koa-views';
-import compression from 'koa-compress';
-import bodyParser from 'koa-bodyparser';
-import serveStatic from 'koa-static';
-import koaUtils from './utils/koa';
-
+const Koa = require('koa');
+const helmet = require('koa-helmet');
+const views = require('koa-views');
+const compression = require('koa-compress');
+const bodyParser = require('koa-bodyparser');
+const serveStatic = require('koa-static');
 const debug = require('debug')('api');
+const koaUtils = require('./utils/koa');
 
 const app = new Koa();
 
@@ -34,21 +33,21 @@ app.use(bodyParser());
 app.use(serveStatic(`${__dirname}/public`));
 
 app.use(async (ctx, next) => {
-  // ctx.response.setHeader('Access-Control-Allow-Origin', `https://${domain}`);
-  ctx.response.setHeader('Access-Control-Allow-Methods', '*');
-  ctx.response.setHeader('Access-Control-Allow-Headers', '*,content-type');
-  ctx.response.setHeader(
+  // ctx.set('Access-Control-Allow-Origin', `https://${domain}`);
+  ctx.set('Access-Control-Allow-Methods', '*');
+  ctx.set('Access-Control-Allow-Headers', '*,content-type');
+  ctx.set(
     'Content-Security-Policy',
     "default-src 'self'; ",
   );
   // Set to true if you need the website to include cookies in the requests sent
   // to the API (e.g. in case you use sessions)
-  ctx.response.setHeader('Access-Control-Allow-Credentials', true);
+  ctx.set('Access-Control-Allow-Credentials', true);
 
   await next();
 });
 
 const serverPort = process.env.PORT || 8080;
 app.listen(serverPort, () => {
-  debug('Running server on http://%s:%s', serverPort);
+  debug('Running server on port %s', serverPort);
 });

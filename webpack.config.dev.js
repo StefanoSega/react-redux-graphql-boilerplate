@@ -2,6 +2,7 @@ const webpack = require('webpack');
 
 module.exports = [{
   name: 'react-app',
+  mode: 'development',
   devtool: 'eval',
   cache: true,
   entry: {
@@ -10,12 +11,11 @@ module.exports = [{
       'webpack-hot-middleware/client',
       './react/index.jsx',
     ],
-    vendor: [
-      'react', 'react-redux', 'redux', 'react-dom', 'moment',
+    vendors: [
+      'react', 'react-redux', 'redux', 'react-dom',
     ],
   },
   output: {
-    // eslint-disable-next-line no-undef
     path: `${__dirname}/dist/__build__`,
     filename: '[name].js',
     chunkFilename: '[id].chunk.js',
@@ -25,16 +25,13 @@ module.exports = [{
     rules: [{
       test: /\.jsx?$/,
       loader: 'babel-loader',
-      exclude: [/node_modules/, /.+\.config.js/],
+      exclude: [/node_modules/],
     }],
   },
   resolve: {
     extensions: ['.js', '.jsx'],
   },
   plugins: [
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-    }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
@@ -43,4 +40,14 @@ module.exports = [{
     }),
     new webpack.IgnorePlugin(/^vertx$/),
   ],
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          name: 'vendors',
+          chunks: 'all',
+        },
+      },
+    },
+  },
 }];
